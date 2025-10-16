@@ -1,0 +1,194 @@
+---
+import { prefectures } from "../../data/prefectures";
+import Layout from "../../layouts/Layout.astro";
+import { getPrefByPrefCode, getNumberOfCardsInPref, getNumberOfCardsInPrefWithoutEnd } from "../../utils/pref";
+
+export function getStaticPaths() {
+  return prefectures.map((pref) => ({
+    params: { code: pref.code.toString() },
+    props: { pref },
+  }));
+}
+
+const { code } = Astro.params;
+const pref = getPrefByPrefCode(Number(code));
+if (!pref) {
+  throw new Error("Not found");
+}
+---
+
+<Layout
+  title={`${pref.name}の交通系ICカード`}
+  description={`${pref.name}で利用できる交通系ICカード情報一覧です。`}
+>
+  <div class="flex items-center gap-2 my-2">
+    <a href="/" class="text-blue-600 hover:underline">ホーム</a>
+    <span class="text-gray-500">&gt;</span>
+    <span>{pref.name}</span>
+  </div>
+  <div id="counter" class="my-4 flex justify-center gap-8">
+    <div class="flex flex-col items-center justify-center gap-2">
+      <p class="font-bold">
+        <span class="text-4xl text-blue-400" id="owned-count">0</span><span
+          class="text-xl"
+        >
+          / {getNumberOfCardsInPrefWithoutEnd(Number(code))}</span
+        ><span class="text-gray-500">({getNumberOfCardsInPref(Number(code))})</span>
+      </p>
+      <p><span>所持枚数</span></p>
+    </div>
+  </div>
+  <h2 class="text-xl font-bold mt-4 mb-2">{pref.name}</h2>
+  {
+    pref.cards.length === 0 ? (
+      <p>この都道府県の交通系ICカード情報は登録されていません。</p>
+    ) : (
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+        {pref.cards.map((card) => (
+          <button
+            type="button"
+            data-card={JSON.stringify(card)}
+            class="relative shadow p-2 border border-gray-200 rounded hover:shadow-xs duration-150 hover:bg-gray-50 flex flex-col items-center justify-center text-center text-sm"
+          >
+            <span class="owned-badge hidden absolute top-1 right-1 bg-green-100 text-green-700 text-xs px-1 rounded">所持</span>
+            <img src={card.image} alt={card.name} class="mb-2" />
+            <p>{card.name}</p>
+          </button>
+        ))}
+      </div>
+
+      <!-- Card detail dialog -->
+      <dialog id="cardDialog" class="max-w-2xl max-h-full w-full m-auto p-0 bg-transparent overflow-hidden">
+        <form method="dialog" class="mx-4 bg-white rounded-lg">
+          <div class="p-4">
+            <div class="mb-2 flex justify-end">
+              <button type="submit" class="text-gray-500 hover:text-gray-700 py-1.5 px-3 border rounded-xl">✕</button>
+            </div>
+            <div class="flex flex-col md:flex-row items-start gap-4">
+              <img src="" alt="" class="w-full md:w-auto md:h-32 object-contain" />
+              <div class="flex-1" id="card-details">
+              </div>
+            </div>
+          </div>
+        </form>
+      </dialog>
+    )
+  }
+</Layout>
+
+<script>
+  import {format} from "date-fns";
+import type { Card } from "../../types/cards";
+import { getOwnedIds, toggleOwned, isOwned, getOwnedCountByPrefCode } from "../../utils/storage";
+
+  const code = location.pathname.split('/').pop();
+  document.querySelector("#owned-count")!.textContent =
+    String(getOwnedCountByPrefCode(Number(code)));
+
+  // Client-side modal handler for card details
+  const dialog = document.getElementById('cardDialog') as HTMLDialogElement | null;
+
+  if (dialog) {
+    // reflect ownership on initial load
+    const initialOwned = getOwnedIds();
+    document.querySelectorAll('[data-card]').forEach((b) => {
+      try {
+        const c = JSON.parse(b.getAttribute('data-card') || '{}');
+        const badge = b.querySelector('.owned-badge');
+        if (!badge) return;
+        if (initialOwned.has(c.id)) {
+          badge.classList.remove('hidden');
+          b.classList.add('border-green-400');
+        } else {
+          badge.classList.add('hidden');
+          b.classList.remove('border-green-400');
+        }
+      } catch (e) {}
+    });
+    // Open dialog when any card button is clicked
+    document.querySelectorAll('[data-card]').forEach((el) => {
+      el.addEventListener('click', () => {
+        if (!el.getAttribute('data-card')) return;
+        const card: Card = JSON.parse(el.getAttribute('data-card')!);
+
+        const imgEl = dialog.querySelector('img');
+        if (imgEl) {
+          imgEl.src = card.image;
+          imgEl.alt = card.name;
+        }
+
+        const cardEl = dialog.querySelector('#card-details');
+        if (cardEl) {
+          cardEl.innerHTML = `
+            <div class="mb-2">
+              <a href="${card.url || '#'}" target="_blank" rel="noopener noreferrer" class="underline text-2xl font-semibold">${card.name}</a>
+            </div>
+            ${card.suicaCompatible ? '<p class="mt-1 text-gray-500 text-sm">地域連携IC (Suica)</p>' : ''}${card.sharing ? `<p class="mt-1 text-gray-500 text-sm">全国相互利用サービス</p>` : ''}${card.ended && card.endedAt ? `<p class="text-red-600 font-semibold">${format(card.endedAt, 'yyyy年MM月dd日')}に販売終了</p>` : ''}
+            <p class="text-gray-500 text-sm">最低発売価格：${card.minPrice}円</p>
+            <p class="text-gray-500 text-sm">${card.notes || ''}</p>
+            <div class="mt-3">
+              <button id="ownership-toggle" type="button" class="cursor-pointer shadow px-3 py-2 rounded bg-white border duration-150 hover:shadow-xs">所持状態を切り替える</button>
+            </div>
+            <details class="mt-2">
+              <summary class="cursor-pointer hover:underline">販売場所・利用可能エリアなどの詳細情報</summary>
+              <div class="mt-1 text-sm text-gray-700 max-h-40 overflow-y-scroll">
+                ${card.sales ? `<p class="font-semibold">販売場所:</p><ul class="list-disc list-inside mb-2">${card.sales.map(place => `<li>${place}</li>`).join('')}</ul>` : ''}
+                ${card.availableAreas ? `<p class="font-semibold">利用可能エリア:</p><ul class="list-disc list-inside">${card.availableAreas.map(area => `<li>${area}</li>`).join('')}</ul>` : ''}
+              </div>
+            </details>
+          `;
+
+          // after injecting, wire up the ownership toggle
+          const toggleBtn = cardEl.querySelector('#ownership-toggle');
+          if (toggleBtn) {
+            const updateToggleLabel = () => {
+              const owned = isOwned(card.id);
+              toggleBtn.textContent = owned ? '所持中' : '未所持';
+              toggleBtn.classList.toggle('bg-green-100', owned);
+            };
+
+            updateToggleLabel();
+
+            toggleBtn.addEventListener('click', () => {
+              const isNowOwned = toggleOwned(card.id);
+              updateToggleLabel();
+              document.querySelector("#owned-count")!.textContent =
+                String(getOwnedCountByPrefCode(Number(code)));
+              // reflect in grid
+              document.querySelectorAll('[data-card]').forEach((b) => {
+                try {
+                  const c = JSON.parse(b.getAttribute('data-card') || '{}');
+                  const badge = b.querySelector('.owned-badge');
+                  if (!badge) return;
+                  if (isNowOwned && c.id === card.id) {
+                    badge.classList.remove('hidden');
+                    b.classList.add('border-green-400');
+                  } else if (!isNowOwned && c.id === card.id) {
+                    badge.classList.add('hidden');
+                    b.classList.remove('border-green-400');
+                  }
+                } catch (e) {}
+              });
+            });
+          }
+        }
+
+        // Use showModal when available, otherwise fallback to open class
+        if (typeof dialog.showModal === 'function') {
+          dialog.showModal();
+        } else {
+          dialog.setAttribute('open', '');
+        }
+      });
+    });
+
+    // Close fallback: clicking outside the form will close when using showModal.
+    // When using the open attribute fallback, allow clicking the backdrop to close.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog && !dialog.hasAttribute('inert')) {
+        if (typeof dialog.close === 'function') dialog.close();
+        else dialog.removeAttribute('open');
+      }
+    });
+  }
+</script>

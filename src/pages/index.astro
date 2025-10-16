@@ -1,16 +1,84 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
+import { getNumberOfCards, getNumberOfCardsWithoutEnd } from "../utils/pref";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+  <div id="counter" class="my-4 flex justify-center gap-8">
+    <div class="flex flex-col items-center justify-center gap-2">
+      <p class="font-bold">
+        <span class="text-4xl text-blue-400" id="owned-count">0</span><span
+          class="text-xl"
+        >
+          / {getNumberOfCardsWithoutEnd()}</span
+        ><span class="text-gray-500">({getNumberOfCards()})</span>
+      </p>
+      <p><span>所持枚数</span></p>
+    </div>
+  </div>
+  <div id="color-sample" class="flex flex-wrap items-center gap-2">
+    <div class="flex items-center gap-1">
+      <div class="w-6 h-6 bg-[#222222] border border-[#222222] rounded"></div>
+      <span>ICなし</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-6 h-6 bg-[#EEEEEE] border border-[#EEEEEE] rounded"></div>
+      <span>未所持</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-6 h-6 bg-[#d6f53d] border border-[#d6f53d] rounded"></div>
+      <span>一部所持</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-6 h-6 bg-[#ff9419] border border-[#ff9419] rounded"></div>
+      <span>全て所持</span>
+    </div>
+  </div>
+  <div id="map"></div>
+  <div class="text-center text-sm text-gray-500 my-4">
+    <p>
+      地図：<a
+        href="https://github.com/geolonia/japanese-prefectures"
+        class="text-blue-600 hover:underline">geolonia/japanese-prefectures</a
+      >
+    </p>
+  </div>
+</Layout>
+
+<script>
+  import { getPrefectureDefaultColor } from "../utils/pref";
+  import { getTotalOwnedCount } from "../utils/storage";
+  const mapUrl =
+    "https://raw.githubusercontent.com/geolonia/japanese-prefectures/master/map-polygon.svg";
+  document.querySelector("#owned-count")!.textContent =
+    String(getTotalOwnedCount());
+  const container = document.querySelector("#map");
+
+  const res = await fetch(mapUrl);
+  if (res.ok && container) {
+    const svg = await res.text();
+    container.innerHTML = svg;
+    const prefs = document.querySelectorAll(".geolonia-svg-map .prefecture");
+
+    prefs.forEach((pref) => {
+      (pref as SVGPathElement).style.fill = getPrefectureDefaultColor(
+        Number((pref as SVGPathElement).dataset.code) || 0
+      );
+      pref.addEventListener("mouseover", (event) => {
+        (event.currentTarget! as SVGPathElement).style.fill = "#ff0000";
+      });
+
+      pref.addEventListener("mouseleave", (event) => {
+        (event.currentTarget! as SVGPathElement).style.fill =
+          getPrefectureDefaultColor(
+            Number((event.currentTarget! as SVGPathElement).dataset.code) || 0
+          );
+      });
+
+      pref.addEventListener("click", (event) => {
+        location.href = `/pref/${(event.currentTarget! as SVGPathElement).dataset.code}`;
+      });
+    });
+  }
+</script>

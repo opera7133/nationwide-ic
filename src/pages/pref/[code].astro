@@ -81,7 +81,11 @@ if (!pref) {
 import type { Card } from "../../types/cards";
 import { getOwnedIds, toggleOwned, isOwned, getOwnedCountByPrefCode } from "../../utils/storage";
 
-  const code = location.pathname.split('/').pop();
+  const codeRegex = /\/pref\/(\d+)\/?$/;
+  if (!codeRegex.test(location.pathname)) {
+    console.error("Invalid URL format");
+  }
+  const code = codeRegex.exec(location.pathname)![1];
   document.querySelector("#owned-count")!.textContent =
     String(getOwnedCountByPrefCode(Number(code)));
 

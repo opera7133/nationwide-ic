@@ -2,4 +2,4 @@
 
 ## ライセンス
 
-`/public/images/cards`以下の各種ICカード画像を除き、
+`/public/images/cards`以下の各種ICカード画像を除き、MITライセンスです。

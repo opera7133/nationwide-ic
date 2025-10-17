@@ -11,6 +11,23 @@ const { title, description } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title ? title : "全国(共通)交通系ICカード一覧"}</title>
     {description && <meta name="description" content={description} />}
+    <meta
+      property="og:title"
+      content={title ? title : "全国(共通)交通系ICカード一覧"}
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nationwide-ic.pages.dev/" />
+    <meta
+      property="og:image"
+      content="https://wmsci.com/img/works/nationwide-ic.jpg"
+    />
+    <meta
+      property="og:description"
+      content="全国の交通系ICカード情報を一元管理"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@scgame_m" />
+    <link rel="icon" type="image/png" href="favicon.png" />
   </head>
   <body class="container max-w-2xl mx-auto">
     <!-- <Viewer /> -->

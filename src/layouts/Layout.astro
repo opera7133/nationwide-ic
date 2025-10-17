@@ -36,19 +36,24 @@ const { title, description } = Astro.props;
       <p class="mt-1">全国の交通系ICカード情報を一元管理します。</p>
       <slot />
       <div class="text-center text-sm text-gray-500 my-8">
-        <a href="https://wmsci.com/" class="mr-4 underline">wmsci.com</a>
-        <a
-          href="https://github.com/opera7133/nationwide-ic"
-          class="mr-4 underline"
-          target="_blank"
-          rel="noopener noreferrer">リポジトリ</a
-        >
-        <a
-          href="https://github.com/opera7133/nationwide-ic/issues/new"
-          class="underline"
-          target="_blank"
-          rel="noopener noreferrer">各種提案</a
-        >
+        <div>
+          <a href="https://wmsci.com/" class="mr-4 underline">wmsci.com</a>
+          <a
+            href="https://github.com/opera7133/nationwide-ic"
+            class="mr-4 underline"
+            target="_blank"
+            rel="noopener noreferrer">リポジトリ</a
+          >
+          <a
+            href="https://github.com/opera7133/nationwide-ic/issues/new"
+            class="underline"
+            target="_blank"
+            rel="noopener noreferrer">各種提案</a
+          >
+        </div>
+        <p class="mt-2 text-xs">
+          このサイトに記載されている情報は、一部不正確・古い可能性があります。正式な情報は各ICカードの公式サイト等でご確認ください。
+        </p>
       </div>
     </main>
   </body>

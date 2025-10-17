@@ -44,6 +44,36 @@ export const getOwnedCountByPrefCode = (code: number): number => {
   return pref.cards.reduce((acc, c) => (owned.has(c.id) ? acc + 1 : acc), 0);
 };
 
+// Encode a set of ids into a compact URL-safe string for sharing
+export const encodeOwnedIds = (ids: Set<string>): string => {
+  try {
+    const json = JSON.stringify(Array.from(ids));
+    // base64 encode, then make URL-safe
+    const b64 = btoa(json);
+    return encodeURIComponent(
+      b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
+    );
+  } catch (e) {
+    return "";
+  }
+};
+
+// Decode a shared string back into a Set of ids
+export const decodeOwnedIds = (s: string): Set<string> => {
+  try {
+    // reverse URL-safe transform
+    const cleaned = decodeURIComponent(s).replace(/-/g, "+").replace(/_/g, "/");
+    // pad base64 to correct length
+    const pad =
+      cleaned.length % 4 === 0 ? "" : "=".repeat(4 - (cleaned.length % 4));
+    const json = atob(cleaned + pad);
+    const arr = JSON.parse(json);
+    return new Set<string>(arr);
+  } catch (e) {
+    return new Set<string>();
+  }
+};
+
 export default {
   getOwnedIds,
   setOwnedIds,

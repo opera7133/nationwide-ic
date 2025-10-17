@@ -15,6 +15,7 @@ const pref = getPrefByPrefCode(Number(code));
 if (!pref) {
   throw new Error("Not found");
 }
+const s = Astro.url.searchParams.get("s");
 ---
 
 <Layout
@@ -22,7 +23,7 @@ if (!pref) {
   description={`${pref.name}で利用できる交通系ICカード情報一覧です。`}
 >
   <div class="flex items-center gap-2 my-2">
-    <a href="/" class="text-blue-600 hover:underline">ホーム</a>
+    <a href="/" class="text-blue-600 hover:underline" id="home-link">ホーム</a>
     <span class="text-gray-500">&gt;</span>
     <span>{pref.name}</span>
   </div>
@@ -78,23 +79,57 @@ if (!pref) {
 
 <script>
   import {format} from "date-fns";
-import type { Card } from "../../types/cards";
-import { getOwnedIds, toggleOwned, isOwned, getOwnedCountByPrefCode } from "../../utils/storage";
+  import type { Card } from "../../types/cards";
+  import { getOwnedIds, toggleOwned, isOwned, getOwnedCountByPrefCode, decodeOwnedIds } from "../../utils/storage";
 
   const codeRegex = /\/pref\/(\d+)\/?$/;
   if (!codeRegex.test(location.pathname)) {
     console.error("Invalid URL format");
   }
   const code = codeRegex.exec(location.pathname)![1];
-  document.querySelector("#owned-count")!.textContent =
-    String(getOwnedCountByPrefCode(Number(code)));
+  // If URL has s= token, use shared set and show viewer-only mode
+  const params = new URLSearchParams(location.search);
+  const share = params.get('s');
+  const sharedSet = share ? decodeOwnedIds(share) : null;
+
+  if (sharedSet) {
+    const homeLink = document.getElementById('home-link') as HTMLAnchorElement;
+    if (homeLink) {
+      homeLink.href = '/?s=' + encodeURIComponent(share!);
+    }
+    const root = document.querySelector('body');
+    if (root) {
+      const viewer = document.createElement('div');
+      viewer.innerHTML = `
+        <div class="py-2 bg-yellow-100 text-center w-full">
+          <p class="text-amber-600">閲覧専用モードです。<a href="/" class="underline">終了する</a></p>
+        </div>
+      `;
+      root.insertBefore(viewer, root.firstChild);
+    }
+  }
+
+  // compute owned count for this pref (from sharedSet if present, otherwise from storage)
+  const countForPref = () => {
+    const owned = sharedSet ?? getOwnedIds();
+    let cnt = 0;
+    document.querySelectorAll('[data-card]').forEach((b) => {
+      try {
+        const c = JSON.parse(b.getAttribute('data-card') || '{}');
+        if (owned.has(c.id)) cnt += 1;
+      } catch (e) {}
+    });
+    return cnt;
+  };
+
+  document.querySelector("#owned-count")!.textContent = String(countForPref());
 
   // Client-side modal handler for card details
   const dialog = document.getElementById('cardDialog') as HTMLDialogElement | null;
 
   if (dialog) {
-    // reflect ownership on initial load
-    const initialOwned = getOwnedIds();
+  // reflect ownership on initial load (use sharedSet when viewing a shared link)
+  const initialOwned = sharedSet ?? getOwnedIds();
     document.querySelectorAll('[data-card]').forEach((b) => {
       try {
         const c = JSON.parse(b.getAttribute('data-card') || '{}');
@@ -142,38 +177,44 @@ import { getOwnedIds, toggleOwned, isOwned, getOwnedCountByPrefCode } from "../.
             </details>
           `;
 
-          // after injecting, wire up the ownership toggle
+          // after injecting, wire up the ownership toggle (disabled in viewer-only)
           const toggleBtn = cardEl.querySelector('#ownership-toggle');
           if (toggleBtn) {
             const updateToggleLabel = () => {
-              const owned = isOwned(card.id);
+              const owned = sharedSet ? sharedSet.has(card.id) : isOwned(card.id);
               toggleBtn.textContent = owned ? '所持中' : '未所持';
               toggleBtn.classList.toggle('bg-green-100', owned);
             };
 
             updateToggleLabel();
 
-            toggleBtn.addEventListener('click', () => {
-              const isNowOwned = toggleOwned(card.id);
-              updateToggleLabel();
-              document.querySelector("#owned-count")!.textContent =
-                String(getOwnedCountByPrefCode(Number(code)));
-              // reflect in grid
-              document.querySelectorAll('[data-card]').forEach((b) => {
-                try {
-                  const c = JSON.parse(b.getAttribute('data-card') || '{}');
-                  const badge = b.querySelector('.owned-badge');
-                  if (!badge) return;
-                  if (isNowOwned && c.id === card.id) {
-                    badge.classList.remove('hidden');
-                    b.classList.add('border-green-400');
-                  } else if (!isNowOwned && c.id === card.id) {
-                    badge.classList.add('hidden');
-                    b.classList.remove('border-green-400');
-                  }
-                } catch (e) {}
+            if (!sharedSet) {
+              toggleBtn.addEventListener('click', () => {
+                const isNowOwned = toggleOwned(card.id);
+                updateToggleLabel();
+                document.querySelector("#owned-count")!.textContent =
+                  String(getOwnedCountByPrefCode(Number(code)));
+                // reflect in grid
+                document.querySelectorAll('[data-card]').forEach((b) => {
+                  try {
+                    const c = JSON.parse(b.getAttribute('data-card') || '{}');
+                    const badge = b.querySelector('.owned-badge');
+                    if (!badge) return;
+                    if (isNowOwned && c.id === card.id) {
+                      badge.classList.remove('hidden');
+                      b.classList.add('border-green-400');
+                    } else if (!isNowOwned && c.id === card.id) {
+                      badge.classList.add('hidden');
+                      b.classList.remove('border-green-400');
+                    }
+                  } catch (e) {}
+                });
               });
-            });
+            } else {
+              // viewer-only: disable the button
+              (toggleBtn as HTMLButtonElement).disabled = true;
+              toggleBtn.classList.add('opacity-60', 'cursor-not-allowed');
+            }
           }
         }
 

@@ -5,7 +5,7 @@ import { getNumberOfCards, getNumberOfCardsWithoutEnd } from "../utils/pref";
 ---
 
 <Layout>
-  <div id="counter" class="my-4 flex justify-center gap-8">
+  <div id="counter" class="my-4 block">
     <div class="flex flex-col items-center justify-center gap-2">
       <p class="font-bold">
         <span class="text-4xl text-blue-400" id="owned-count">0</span><span
@@ -17,6 +17,9 @@ import { getNumberOfCards, getNumberOfCardsWithoutEnd } from "../utils/pref";
       <p><span>所持枚数</span></p>
     </div>
   </div>
+  <button id="share-button" class="w-full my-4 py-2 border rounded"
+    >所持を共有</button
+  >
   <div id="color-sample" class="flex flex-wrap items-center gap-2">
     <div class="flex items-center gap-1">
       <div class="w-6 h-6 bg-[#222222] border border-[#222222] rounded"></div>
@@ -48,11 +51,38 @@ import { getNumberOfCards, getNumberOfCardsWithoutEnd } from "../utils/pref";
 
 <script>
   import { getPrefectureDefaultColor } from "../utils/pref";
-  import { getTotalOwnedCount } from "../utils/storage";
+  import {
+    getTotalOwnedCount,
+    encodeOwnedIds,
+    decodeOwnedIds,
+    getOwnedIds,
+  } from "../utils/storage";
   const mapUrl =
     "https://raw.githubusercontent.com/geolonia/japanese-prefectures/master/map-polygon.svg";
-  document.querySelector("#owned-count")!.textContent =
-    String(getTotalOwnedCount());
+  // If URL has ?s=..., treat as viewer-only and use provided shared set
+  const params = new URLSearchParams(location.search);
+  const share = params.get("s");
+  let sharedSet = null;
+  if (share) {
+    sharedSet = decodeOwnedIds(share);
+    // show viewer banner
+    const root = document.querySelector("body");
+    if (root) {
+      const viewer = document.createElement("div");
+      viewer.innerHTML = `
+        <div class="py-2 bg-yellow-100 text-center w-full">
+          <p class="text-amber-600">閲覧専用モードです。<a href="/" class="underline">終了する</a></p>
+        </div>
+      `;
+      root.insertBefore(viewer, root.firstChild);
+    }
+    document.querySelector("#owned-count")!.textContent = String(
+      sharedSet.size
+    );
+  } else {
+    document.querySelector("#owned-count")!.textContent =
+      String(getTotalOwnedCount());
+  }
   const container = document.querySelector("#map");
 
   const res = await fetch(mapUrl);
@@ -77,8 +107,30 @@ import { getNumberOfCards, getNumberOfCardsWithoutEnd } from "../utils/pref";
       });
 
       pref.addEventListener("click", (event) => {
-        location.href = `/pref/${(event.currentTarget! as SVGPathElement).dataset.code}`;
+        if (share) {
+          location.href = `/pref/${(event.currentTarget! as SVGPathElement).dataset.code}?s=${share}`;
+        } else {
+          location.href = `/pref/${(event.currentTarget! as SVGPathElement).dataset.code}`;
+        }
       });
     });
   }
+
+  // share button generator (non-blocking)
+  const shareBtn = document.getElementById("share-button")!;
+  shareBtn.addEventListener("click", () => {
+    const ids = getOwnedIds();
+    const token = encodeOwnedIds(ids);
+    const url = `${location.origin}${location.pathname}?s=${token}`;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        alert("共有リンクをコピーしました");
+      },
+      () => {
+        prompt("共有リンク（手動コピー）", url);
+      }
+    );
+  });
+  const counter = document.querySelector("#counter");
+  if (counter) counter.appendChild(shareBtn);
 </script>

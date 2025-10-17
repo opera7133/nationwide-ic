@@ -1,6 +1,12 @@
 // Helpers for managing owned cards in localStorage
-import type { Prefecture, Card } from "../types/cards";
 import { prefectures } from "../data/prefectures";
+import lzstring from "lz-string";
+const {
+  compressToEncodedURIComponent,
+  decompressFromEncodedURIComponent,
+  compressToUTF16,
+  decompressFromUTF16,
+} = lzstring;
 
 const OWN_KEY = "ownedCards";
 
@@ -43,27 +49,69 @@ export const getOwnedCountByPrefCode = (code: number): number => {
   const owned = getOwnedIds();
   return pref.cards.reduce((acc, c) => (owned.has(c.id) ? acc + 1 : acc), 0);
 };
+// Versioned encoders/decoders
+// v2: LZString-compressed JSON array (compact and resilient to card list changes)
+// v1 (legacy): JSON array -> base64url
 
-// Encode a set of ids into a compact URL-safe string for sharing
 export const encodeOwnedIds = (ids: Set<string>): string => {
+  // prefer compressed v2 (LZString)
+  try {
+    const arr = Array.from(ids);
+    const json = JSON.stringify(arr);
+    // compress to base64, then make URL-safe
+    const compressedB64 = compressToEncodedURIComponent(json);
+    const token = compressedB64
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+    return `v2:${token}`;
+  } catch (e) {
+    // fallback to legacy
+  }
+
+  // fallback: v1 JSON base64
   try {
     const json = JSON.stringify(Array.from(ids));
-    // base64 encode, then make URL-safe
     const b64 = btoa(json);
-    return encodeURIComponent(
-      b64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "")
-    );
+    const token = b64
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+    return `v1:${token}`;
   } catch (e) {
     return "";
   }
 };
 
-// Decode a shared string back into a Set of ids
 export const decodeOwnedIds = (s: string): Set<string> => {
   try {
-    // reverse URL-safe transform
-    const cleaned = decodeURIComponent(s).replace(/-/g, "+").replace(/_/g, "/");
-    // pad base64 to correct length
+    if (!s) return new Set<string>();
+
+    // Accept optional version prefix 'v2:' or 'v1:'; if no prefix assume legacy (v1)
+    let version = "v1";
+    let token = s;
+    if (s.startsWith("v2:")) {
+      version = "v2";
+      token = s.slice(3);
+    } else if (s.startsWith("v1:")) {
+      version = "v1";
+      token = s.slice(3);
+    }
+
+    if (version === "v2") {
+      // base64url -> base64 -> decompress -> JSON array
+      const cleaned = token.replace(/-/g, "+").replace(/_/g, "/");
+      const pad =
+        cleaned.length % 4 === 0 ? "" : "=".repeat(4 - (cleaned.length % 4));
+      const b64 = cleaned + pad;
+      const json = decompressFromEncodedURIComponent(b64);
+      if (!json) return new Set<string>();
+      const arr = JSON.parse(json);
+      return new Set<string>(arr);
+    }
+
+    // v1 / legacy: base64url decode -> JSON array
+    const cleaned = token.replace(/-/g, "+").replace(/_/g, "/");
     const pad =
       cleaned.length % 4 === 0 ? "" : "=".repeat(4 - (cleaned.length % 4));
     const json = atob(cleaned + pad);

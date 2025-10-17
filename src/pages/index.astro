@@ -121,7 +121,7 @@ import { getNumberOfCards, getNumberOfCardsWithoutEnd } from "../utils/pref";
   shareBtn.addEventListener("click", () => {
     const ids = getOwnedIds();
     const token = encodeOwnedIds(ids);
-    const url = `${location.origin}${location.pathname}?s=${token}`;
+    const url = `${location.origin}${location.pathname}?s=${encodeURIComponent(token)}`;
     navigator.clipboard.writeText(url).then(
       () => {
         alert("共有リンクをコピーしました");

@@ -4,6 +4,7 @@ const nagasakiCards: Card[] = [
   {
     id: "ntasu",
     name: "エヌタスカード",
+    shortName: "KA",
     url: "https://www.ntasu.co.jp",
     image: "/images/cards/ntasu.jpg",
     sales: [
@@ -19,6 +20,7 @@ const nagasakiCards: Card[] = [
   {
     id: "nagasaki-nimoca",
     name: "nagasaki nimoca",
+    shortName: "NR-N",
     url: "https://www.naga-den.com/pages/727/",
     image: "/images/cards/nagasaki-nimoca.jpg",
     sales: [

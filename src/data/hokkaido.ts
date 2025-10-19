@@ -4,6 +4,7 @@ const hokkaidoCards: Card[] = [
   {
     id: "kitaca",
     name: "Kitaca",
+    shortName: "JH",
     url: "https://www.jrhokkaido.co.jp/kitaca/",
     image: "/images/cards/kitaca.png",
     sales: [
@@ -23,6 +24,7 @@ const hokkaidoCards: Card[] = [
   {
     id: "sapica",
     name: "SAPICA",
+    shortName: "SP",
     url: "https://www.sapica.jp",
     image: "/images/cards/sapica.jpg",
     sales: [
@@ -43,6 +45,7 @@ const hokkaidoCards: Card[] = [
   {
     id: "icas-nimoca",
     name: "ICAS nimoca",
+    shortName: "NR-I",
     url: "https://www.city.hakodate.hokkaido.jp/docs/2020111700024/",
     image: "/images/cards/icas-nimoca.jpg",
     sales: [
@@ -60,6 +63,7 @@ const hokkaidoCards: Card[] = [
   {
     id: "asaca",
     name: "Asaca",
+    shortName: "KA",
     url: "https://www.asahikawa-denkikidou.jp/ic-card/",
     image: "/images/cards/asaca.png",
     sales: [
@@ -79,6 +83,7 @@ const hokkaidoCards: Card[] = [
   {
     id: "do-card",
     name: "Doカード",
+    shortName: "KB",
     url: "https://www.dohokubus.com/buscard.html",
     image: "/images/cards/do-card.jpg",
     sales: [

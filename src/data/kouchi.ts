@@ -4,6 +4,7 @@ const kouchiCards: Card[] = [
   {
     id: "desuca",
     name: "ですか",
+    shortName: "DE",
     url: "https://www.desuca.co.jp",
     image: "/images/cards/desuca.jpg",
     sales: [

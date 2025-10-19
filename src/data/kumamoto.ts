@@ -4,6 +4,7 @@ const kumamotoCards: Card[] = [
   {
     id: "kumamon-ic",
     name: "くまモンのIC CARD",
+    shortName: "KM",
     url: "https://www.kumamotoiccard.jp",
     image: "/images/cards/kumamon-ic.jpg",
     sales: [
@@ -37,6 +38,7 @@ const kumamotoCards: Card[] = [
   {
     id: "denden-nimoca",
     name: "でんでんnimoca",
+    shortName: "NR-D",
     url: "https://www.kotsu-kumamoto.jp/kiji/pub/detail.aspx?c_id=67&id=136&pg=1",
     image: "/images/cards/denden-nimoca.jpg",
     sales: [

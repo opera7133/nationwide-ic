@@ -4,6 +4,7 @@ const gifuCards: Card[] = [
   {
     id: "ayuca",
     name: "ayuca",
+    shortName: "GB",
     url: "https://www.gifubus.co.jp/rosen/ayuca.html",
     image: "/images/cards/ayuca.jpg",
     sales: [

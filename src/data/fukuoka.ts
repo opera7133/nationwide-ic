@@ -4,6 +4,7 @@ const fukuokaCards: Card[] = [
   {
     id: "mono-sugoca",
     name: "mono SUGOCA",
+    shortName: "JK-M",
     url: "https://www.kitakyushu-monorail.co.jp/fare/ic-card.php",
     image: "/images/cards/mono-sugoca.png",
     sales: ["北九州モノレール各駅券売機"],
@@ -14,6 +15,7 @@ const fukuokaCards: Card[] = [
   {
     id: "sugoca",
     name: "SUGOCA",
+    shortName: "JK",
     url: "https://www.jrkyushu.co.jp/sugoca/",
     image: "/images/cards/sugoca.jpg",
     sales: ["SUGOCA発売機能付自動券売機", "SUGOCAエリア内 一部のみどりの窓口"],
@@ -46,6 +48,7 @@ const fukuokaCards: Card[] = [
   {
     id: "nimoca",
     name: "nimoca",
+    shortName: "NR",
     url: "https://www.nimoca.jp/",
     image: "/images/cards/nimoca.jpg",
     sales: [
@@ -85,6 +88,7 @@ const fukuokaCards: Card[] = [
   {
     id: "hayakaken",
     name: "はやかけん",
+    shortName: "FC",
     url: "https://subway.city.fukuoka.lg.jp/hayakaken/",
     image: "/images/cards/hayakaken.jpg",
     sales: ["福岡市地下鉄各駅券売機・定期券うりば"],

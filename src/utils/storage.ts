@@ -50,11 +50,30 @@ export const getOwnedCountByPrefCode = (code: number): number => {
   return pref.cards.reduce((acc, c) => (owned.has(c.id) ? acc + 1 : acc), 0);
 };
 // Versioned encoders/decoders
+// v3: LZString-compressed JSON array of {id, shortName} (compact and resilient to card ID changes)
 // v2: LZString-compressed JSON array (compact and resilient to card list changes)
 // v1 (legacy): JSON array -> base64url
 
 export const encodeOwnedIds = (ids: Set<string>): string => {
-  // prefer compressed v2 (LZString)
+  // prefer compressed v3 (LZString) with shortName
+  try {
+    const arr = Array.from(ids).map((id) => {
+      const card = prefectures.flatMap((p) => p.cards).find((c) => c.id === id);
+      return card ? card.shortName : id;
+    });
+    const json = JSON.stringify(arr);
+    // compress to base64, then make URL-safe
+    const compressedB64 = compressToEncodedURIComponent(json);
+    const token = compressedB64
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+    return `v3:${token}`;
+  } catch (e) {
+    // fallback to v2
+  }
+
+  // fallback: compressed v2 (LZString)
   try {
     const arr = Array.from(ids);
     const json = JSON.stringify(arr);
@@ -90,12 +109,34 @@ export const decodeOwnedIds = (s: string): Set<string> => {
     // Accept optional version prefix 'v2:' or 'v1:'; if no prefix assume legacy (v1)
     let version = "v1";
     let token = s;
-    if (s.startsWith("v2:")) {
+    if (s.startsWith("v3:")) {
+      version = "v3";
+      token = s.slice(3);
+    } else if (s.startsWith("v2:")) {
       version = "v2";
       token = s.slice(3);
     } else if (s.startsWith("v1:")) {
       version = "v1";
       token = s.slice(3);
+    }
+
+    if (version === "v3") {
+      // base64url -> base64 -> decompress -> JSON array
+      const cleaned = token.replace(/-/g, "+").replace(/_/g, "/");
+      const pad =
+        cleaned.length % 4 === 0 ? "" : "=".repeat(4 - (cleaned.length % 4));
+      const b64 = cleaned + pad;
+      const json = decompressFromEncodedURIComponent(b64);
+      if (!json) return new Set<string>();
+      const arr = JSON.parse(json);
+      // map shortName back to id
+      const ids = arr.map((shortName: string) => {
+        const card = prefectures
+          .flatMap((p) => p.cards)
+          .find((c) => c.shortName === shortName);
+        return card ? card.id : shortName;
+      });
+      return new Set<string>(ids);
     }
 
     if (version === "v2") {

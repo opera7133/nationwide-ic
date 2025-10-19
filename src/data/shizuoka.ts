@@ -4,6 +4,7 @@ const shizuokaCards: Card[] = [
   {
     id: "luluca",
     name: "LuLuCa",
+    shortName: "ST",
     url: "https://www.shizutetsu-luluca.com",
     image: "/images/cards/luluca.jpg",
     sales: [
@@ -22,6 +23,7 @@ const shizuokaCards: Card[] = [
   {
     id: "nicepass",
     name: "ナイスパス",
+    shortName: "ET",
     url: "https://bus.entetsu.co.jp/ticket/nicepass/",
     image: "/images/cards/nicepass.png",
     sales: [

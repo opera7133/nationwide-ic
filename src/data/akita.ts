@@ -4,6 +4,7 @@ const akitaCards: Card[] = [
   {
     id: "akica",
     name: "AKiCA",
+    shortName: "E03",
     url: "https://www.city.akita.lg.jp/kurashi/kotsu/1012207/1033265.html",
     image: "/images/cards/akica.png",
     sales: ["秋田中央交通 各営業所", "秋田中央交通 各案内所"],
@@ -20,6 +21,7 @@ const akitaCards: Card[] = [
   {
     id: "shuhoku-orange-pass",
     name: "Shuhoku Orange Pass",
+    shortName: "E04",
     url: "https://shuhokubus-gr.co.jp/topics/ICcard.html",
     image: "/images/cards/shuhoku-orange-pass.png",
     sales: [

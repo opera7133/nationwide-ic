@@ -4,6 +4,7 @@ const kagoshimaCards: Card[] = [
   {
     id: "rapica",
     name: "RapiCa",
+    shortName: "F1",
     url: "https://www.kotsu-city-kagoshima.jp/ticket-summary/rapica/",
     image: "/images/cards/rapica.jpg",
     sales: [
@@ -34,6 +35,7 @@ const kagoshimaCards: Card[] = [
   {
     id: "iwasaki-ic",
     name: "いわさきICカード",
+    shortName: "IW",
     url: "https://www.iwasaki-corp.com/corp/ic_card/",
     image: "/images/cards/iwasaki-ic.jpg",
     sales: [

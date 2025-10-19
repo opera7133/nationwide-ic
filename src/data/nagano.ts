@@ -4,6 +4,7 @@ const naganoCards: Card[] = [
   {
     id: "kururu",
     name: "KURURU",
+    shortName: "E0D",
     url: "https://ic-kururu.jp",
     image: "/images/cards/kururu.png",
     sales: [

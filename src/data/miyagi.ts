@@ -4,6 +4,7 @@ const miyagiCards: Card[] = [
   {
     id: "icsca",
     name: "icsca",
+    shortName: "SK",
     url: "https://www.kotsu.city.sendai.jp/icsca/index.html",
     image: "/images/cards/icsca.jpg",
     sales: [
@@ -36,6 +37,7 @@ const miyagiCards: Card[] = [
   {
     id: "odeca",
     name: "odeca",
+    shortName: "E0B",
     url: "https://www.jreast.co.jp/railway/train/brt/odeca.html",
     image: "/images/cards/odeca.jpg",
     sales: ["志津川駅", "気仙沼駅", "陸前高田駅", "盛駅"],

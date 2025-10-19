@@ -4,6 +4,7 @@ const osakaCards: Card[] = [
   {
     id: "icoca",
     name: "ICOCA",
+    shortName: "JW",
     url: "https://www.jr-odekake.net/icoca/",
     image: "/images/cards/icoca.png",
     sales: [],
@@ -14,6 +15,7 @@ const osakaCards: Card[] = [
   {
     id: "pitapa",
     name: "PiTaPa",
+    shortName: "SU",
     url: "https://www.pitapa.com/",
     image: "/images/cards/pitapa.png",
     sales: [],
@@ -22,17 +24,9 @@ const osakaCards: Card[] = [
     sharing: true,
   },
   {
-    id: "hanica",
-    name: "hanica",
-    url: "https://www.hankyubus.co.jp/rosen/ticket/hanica.html",
-    image: "/images/cards/hanica.png",
-    sales: ["阪急バス・阪神バス 車内", "各バス営業所"],
-    minPrice: 2000,
-    availableAreas: ["阪急バス全線", "阪神バス全線"],
-  },
-  {
     id: "tsukica",
     name: "Tsukica",
+    shortName: "TK",
     url: "https://www.citybus.city.takatsuki.osaka.jp/unchin/2018121000043/",
     image: "/images/cards/tsukica.jpg",
     sales: [
@@ -48,6 +42,7 @@ const osakaCards: Card[] = [
   {
     id: "nacci",
     name: "なっち",
+    shortName: "BN",
     url: "https://www.nankaibus.jp/rosen/ticket/",
     image: "/images/cards/nacci.png",
     sales: ["南海バス・南海りんかんバス 車内", "各バス営業所・定期券発売所"],

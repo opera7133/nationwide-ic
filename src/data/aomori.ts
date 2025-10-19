@@ -4,6 +4,7 @@ const aomoriCards: Card[] = [
   {
     id: "aopass",
     name: "AOPASS",
+    shortName: "E06",
     url: "https://www.city.aomori.aomori.jp/koutsu/joushaken_buscard/1002297/index.html",
     image: "/images/cards/aopass.jpg",
     sales: [
@@ -26,6 +27,7 @@ const aomoriCards: Card[] = [
   {
     id: "hachica",
     name: "ハチカ",
+    shortName: "E07",
     url: "https://www.city.hachinohe.aomori.jp/section/hachica/",
     image: "/images/cards/hachica.png",
     sales: [
@@ -42,6 +44,7 @@ const aomoriCards: Card[] = [
   {
     id: "megoica",
     name: "MegoICa",
+    shortName: "E0A",
     url: "https://www.konanbus.com/megoica.html",
     image: "/images/cards/megoica.jpg",
     sales: ["弘前バスターミナル", "五所川原駅前案内所", "青森総合案内所"],
@@ -52,6 +55,7 @@ const aomoriCards: Card[] = [
   {
     id: "towada-skyblue-pass",
     name: "Towada Skyblue Pass",
+    shortName: "E05",
     url: "https://www.toutetsu.co.jp/pdf/towada_skyblue_pass.pdf",
     image: "/images/cards/towada-skyblue-pass.jpg",
     sales: [

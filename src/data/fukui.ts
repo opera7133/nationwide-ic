@@ -4,6 +4,7 @@ const fukuiCards: Card[] = [
   {
     id: "hapiline-icoca",
     name: "ICOCA(ハピラインふくい)",
+    shortName: "JW-H",
     url: "https://www.hapi-line.co.jp/ticket/ic/",
     image: "/images/cards/hapiline-icoca.jpg",
     sales: [

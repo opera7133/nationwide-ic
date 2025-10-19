@@ -4,6 +4,7 @@ const ibarakiCards: Card[] = [
   {
     id: "ibappi",
     name: "いばっピ",
+    shortName: "IB",
     url: "https://www.ibako.co.jp/regular/ibappi/",
     image: "/images/cards/ibappi.png",
     sales: ["茨城交通 各営業所", "茨城交通 各案内所"],

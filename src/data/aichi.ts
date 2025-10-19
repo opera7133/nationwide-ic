@@ -4,6 +4,7 @@ const aichiCards: Card[] = [
   {
     id: "toica",
     name: "TOICA",
+    shortName: "JC",
     url: "https://toica.jr-central.co.jp",
     image: "/images/cards/toica.png",
     sales: ["JR東海の主な駅の券売機・みどりの窓口", "JR東海きっぷうりば"],
@@ -25,6 +26,7 @@ const aichiCards: Card[] = [
   {
     id: "manaca",
     name: "manaca",
+    shortName: "TP",
     url: "https://manaca.jp",
     image: "/images/cards/manaca.png",
     sales: [

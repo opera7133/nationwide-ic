@@ -4,6 +4,7 @@ const hiroshimaCards: Card[] = [
   {
     id: "mobiry-days",
     name: "MOBIRY DAYS",
+    shortName: "MD",
     url: "https://www.mobirydays.jp",
     image: "/images/cards/mobiry-days.png",
     sales: [

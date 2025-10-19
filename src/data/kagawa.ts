@@ -4,6 +4,7 @@ const kagawaCards: Card[] = [
   {
     id: "shikoku-icoca",
     name: "SHIKOKU ICOCA",
+    shortName: "JW-S",
     url: "https://www.jr-shikoku.co.jp/icoca/icoca01-type.html",
     image: "/images/cards/shikoku-icoca.png",
     sales: [
@@ -25,6 +26,7 @@ const kagawaCards: Card[] = [
   {
     id: "iruca",
     name: "IruCa",
+    shortName: "KD",
     url: "https://www.kotoden.co.jp/publichtm/iruca/index.html",
     image: "/images/cards/iruca.jpg",
     sales: [

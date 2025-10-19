@@ -4,6 +4,7 @@ const ehimeCards: Card[] = [
   {
     id: "e-card",
     name: "ICい〜カード",
+    shortName: "IY",
     url: "https://www.iyotetsu.co.jp/e-card/",
     image: "/images/cards/e-card.png",
     sales: [

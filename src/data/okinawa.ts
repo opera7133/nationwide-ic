@@ -4,6 +4,7 @@ const okinawaCards: Card[] = [
   {
     id: "okica",
     name: "OKICA",
+    shortName: "OK",
     url: "https://info.okica.jp",
     image: "/images/cards/okica.png",
     sales: [

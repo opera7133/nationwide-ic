@@ -4,6 +4,7 @@ const tochigiCards: Card[] = [
   {
     id: "totra",
     name: "totra",
+    shortName: "E01",
     url: "https://www.ic-totra.jp",
     image: "/images/cards/totra.png",
     sales: [

@@ -4,6 +4,7 @@ const toyamaCards: Card[] = [
   {
     id: "ecomyca",
     name: "ecomyca",
+    shortName: "TC",
     url: "https://www.chitetsu.co.jp/?page_id=618",
     image: "/images/cards/ecomyca.jpg",
     sales: [
@@ -47,6 +48,7 @@ const toyamaCards: Card[] = [
   {
     id: "ainokaze-icoca",
     name: "ICOCA(あいの風とやま鉄道)",
+    shortName: "JW-A",
     url: "https://ainokaze.co.jp/ticket/ic",
     image: "/images/cards/ainokaze-icoca.jpg",
     sales: ["あいの風とやま鉄道 各駅券売機", "あいの風とやま鉄道 各駅窓口"],

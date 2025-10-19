@@ -4,6 +4,7 @@ const ishikawaCards: Card[] = [
   {
     id: "ica",
     name: "ICa",
+    shortName: "HT",
     url: "https://www.hokutetsu.co.jp/ica/",
     image: "/images/cards/ica.jpg",
     sales: [
@@ -39,6 +40,7 @@ const ishikawaCards: Card[] = [
   {
     id: "ir-ishikawa-icoca",
     name: "ICOCA(IRいしかわ鉄道)",
+    shortName: "JW-I",
     url: "https://www.ishikawa-railway.jp/ticket/icoca/index.html",
     image: "/images/cards/ir-ishikawa-icoca.png",
     sales: [

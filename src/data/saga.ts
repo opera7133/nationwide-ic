@@ -4,6 +4,7 @@ const sagaCards: Card[] = [
   {
     id: "tsu-tsu-nimoca",
     name: "tsu-tsu-nimoca",
+    shortName: "NR-T",
     url: "http://www.bus.saga.saga.jp/nimoca_guide.html",
     image: "/images/cards/tsu-tsu-nimoca.jpg",
     sales: ["佐賀市交通局窓口", "佐賀駅バスセンター窓口", "佐賀市営バス車内"],

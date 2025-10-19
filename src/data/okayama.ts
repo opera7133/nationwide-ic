@@ -4,6 +4,7 @@ const okayamaCards: Card[] = [
   {
     id: "hareca",
     name: "Hareca",
+    shortName: "OD",
     url: "https://shimoden.net/rosen/hareca/",
     image: "/images/cards/hareca.jpg",
     sales: [

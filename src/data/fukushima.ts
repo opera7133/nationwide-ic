@@ -4,6 +4,7 @@ const fukushimaCards: Card[] = [
   {
     id: "noruca",
     name: "NORUCA",
+    shortName: "FK",
     url: "https://www.fukushima-koutu.co.jp/route/noruca/",
     image: "/images/cards/noruca.png",
     sales: [
@@ -34,6 +35,7 @@ const fukushimaCards: Card[] = [
   {
     id: "aizu-noruca",
     name: "AIZU NORUCA",
+    shortName: "AZ",
     url: "https://www.aizubus.com/rosen/aizu_noruca",
     image: "/images/cards/aizu-noruca.png",
     sales: ["若松駅前バスターミナル", "会津若松駅前案内所", "会津バス各営業所"],
@@ -43,6 +45,7 @@ const fukushimaCards: Card[] = [
   {
     id: "lococa",
     name: "LOCOCA",
+    shortName: "E0C",
     url: "https://www.joko.co.jp/lococa-menu/",
     image: "/images/cards/lococa.png",
     sales: ["新常磐交通各案内所"],

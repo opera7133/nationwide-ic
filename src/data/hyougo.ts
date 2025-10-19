@@ -2,8 +2,19 @@ import type { Card, Prefecture } from "../types/cards";
 
 const hyougoCards: Card[] = [
   {
+    id: "hanica",
+    name: "hanica",
+    shortName: "HH",
+    url: "https://www.hankyubus.co.jp/rosen/ticket/hanica.html",
+    image: "/images/cards/hanica.png",
+    sales: ["阪急バス・阪神バス 車内", "各バス営業所"],
+    minPrice: 2000,
+    availableAreas: ["阪急バス全線", "阪神バス全線"],
+  },
+  {
     id: "itappy",
     name: "itappy",
+    shortName: "IT",
     url: "https://itamicity-bus.jp/charge/itappy",
     image: "/images/cards/itappy.jpg",
     sales: [
@@ -18,6 +29,7 @@ const hyougoCards: Card[] = [
   {
     id: "nicopa",
     name: "NicoPa",
+    shortName: "SH",
     url: "https://www.shinkibus.co.jp/bus/iccard/index.html",
     image: "/images/cards/nicopa.png",
     sales: [

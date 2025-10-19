@@ -4,6 +4,7 @@ const niigataCards: Card[] = [
   {
     id: "ryuto",
     name: "りゅーと",
+    shortName: "NB",
     url: "https://www.niigata-kotsu.co.jp/~noriai/route-bus/ryuto/",
     image: "/images/cards/ryuto.jpg",
     sales: [
@@ -18,6 +19,7 @@ const niigataCards: Card[] = [
   {
     id: "busdoko-pay",
     name: "バスどこPay",
+    shortName: "BDP",
     url: "https://www.city.shibata.lg.jp/kurashi/kotsu/bus/1018024.html",
     image: "/images/cards/busdoko-pay.jpg",
     sales: ["新発田市観光情報センター"],

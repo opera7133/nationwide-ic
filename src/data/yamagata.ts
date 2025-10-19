@@ -4,6 +4,7 @@ const yamagataCards: Card[] = [
   {
     id: "yamako-cherica",
     name: "yamako cherica",
+    shortName: "E082",
     url: "https://www.yamakobus.jp/guide/charter-ic.html",
     image: "/images/cards/yamako-cherica.jpg",
     sales: [
@@ -25,6 +26,7 @@ const yamagataCards: Card[] = [
   {
     id: "shoko-cherica",
     name: "shoko cherica",
+    shortName: "E083",
     url: "https://www.shonaikotsu.jp/local_bus/shoko_cherica.html",
     image: "/images/cards/shoko-cherica.png",
     sales: ["エスモールバスターミナル", "庄交バスターミナル"],

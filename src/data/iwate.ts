@@ -4,6 +4,7 @@ const iwateCards: Card[] = [
   {
     id: "iwate-green-pass",
     name: "Iwate Green Pass",
+    shortName: "E022",
     url: "https://www.iwatekenkotsu.co.jp/iccard.html",
     image: "/images/cards/iwate-green-pass.jpg",
     sales: [
@@ -27,6 +28,7 @@ const iwateCards: Card[] = [
   {
     id: "iguca",
     name: "iGUCA",
+    shortName: "E023",
     url: "http://www.iwate-kenpokubus.co.jp/archives/21698/",
     image: "/images/cards/iguca.png",
     sales: [

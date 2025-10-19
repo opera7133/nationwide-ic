@@ -4,6 +4,7 @@ const gunmaCards: Card[] = [
   {
     id: "nolbe",
     name: "nolbé",
+    shortName: "E09",
     url: "https://maebashimobility.jp/traffic/bus/ic_card",
     image: "/images/cards/nolbe.png",
     sales: [

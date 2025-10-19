@@ -4,6 +4,7 @@ const kyotoCards: Card[] = [
   {
     id: "randen-card",
     name: "らんでんカード",
+    shortName: "KF",
     url: "https://www.keifuku.co.jp/cms/randen_ticket/",
     image: "/images/cards/randen-card.png",
     sales: [

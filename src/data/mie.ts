@@ -4,6 +4,7 @@ const mieCards: Card[] = [
   {
     id: "emica",
     name: "emica",
+    shortName: "MT",
     url: "https://www.sanco.co.jp/lp/shuttle/emica/",
     image: "/images/cards/emica.jpg",
     sales: [

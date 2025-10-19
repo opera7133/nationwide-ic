@@ -4,6 +4,7 @@ const tokyoCards: Card[] = [
   {
     id: "pasmo",
     name: "PASMO",
+    shortName: "PB",
     url: "https://www.pasmo.co.jp/",
     image: "/images/cards/pasmo.png",
     sales: ["PASMO取扱事業者の鉄道・バスの主な駅の券売機・窓口"],
@@ -43,6 +44,7 @@ const tokyoCards: Card[] = [
   {
     id: "suica",
     name: "Suica",
+    shortName: "JE",
     url: "https://www.jreast.co.jp/suica/",
     image: "/images/cards/suica.jpg",
     sales: ["JR東日本の主な駅の券売機・みどりの窓口"],
@@ -137,6 +139,7 @@ const tokyoCards: Card[] = [
   {
     id: "rinkai-suica",
     name: "りんかいSuica",
+    shortName: "JE-R",
     url: "https://www.twr.co.jp/route/tabid/129/Default.aspx",
     image: "/images/cards/rinkai-suica.png",
     sales: ["りんかい線各駅（大崎駅を除く） 自動定期券発売機,窓口"],
@@ -147,6 +150,7 @@ const tokyoCards: Card[] = [
   {
     id: "monorail-suica",
     name: "モノレールSuica",
+    shortName: "JE-M",
     url: "https://www.tokyo-monorail.co.jp/tickets/suica/outline.html",
     image: "/images/cards/monorail-suica.png",
     sales: ["東京モノレール各駅 自動券売機,多機能券売機,定期券売場"],

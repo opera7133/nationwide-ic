@@ -4,6 +4,7 @@ const naraCards: Card[] = [
   {
     id: "cica",
     name: "CI-CA",
+    shortName: "NK",
     url: "https://www.narakotsu.co.jp/route/ticket/cica/",
     image: "/images/cards/cica.png",
     sales: [
